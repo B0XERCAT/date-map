@@ -56,8 +56,12 @@ class LoadingActivity : AppCompatActivity() {
     private suspend fun fetchData(location: String): Triple<DataModel.Item, DataModel.Item, DataModel.Item> {
         val restaurant = fetchPlaceData(location, "맛집")
         val cafe = fetchPlaceData(location, "카페")
-        val attraction = fetchPlaceData(location, "명소")
-        return Triple(restaurant[0], cafe[0], attraction[0])
+        val attraction = fetchPlaceData(location, "관광지")
+
+        val shuffledRestaurant = restaurant.shuffled()
+        val shuffledCafe = cafe.shuffled()
+        val shuffledAttraction = attraction.shuffled()
+        return Triple(shuffledRestaurant[0], shuffledCafe[0], shuffledAttraction[0])
     }
 
     private suspend fun fetchPlaceData(location: String, category: String): MutableList<DataModel.Item> {
