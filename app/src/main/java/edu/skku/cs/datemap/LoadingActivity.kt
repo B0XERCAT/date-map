@@ -41,9 +41,10 @@ class LoadingActivity : AppCompatActivity() {
                 loadingText.visibility = TextView.GONE
 
                 val intent = Intent(this@LoadingActivity, ResultActivity::class.java)
-                intent.putExtra("restaurant", restaurant.toString())
-                intent.putExtra("cafe", cafe.toString())
-                intent.putExtra("attraction", attraction.toString())
+                intent.putExtra("restaurant", Gson().toJson(restaurant))
+                intent.putExtra("cafe", Gson().toJson(cafe))
+                intent.putExtra("attraction", Gson().toJson(attraction))
+
                 startActivity(intent)
                 finish()
             } catch (e: Exception) {
