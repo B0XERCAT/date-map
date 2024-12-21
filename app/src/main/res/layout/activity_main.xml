@@ -5,22 +5,34 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="30dp"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date Map"
+        android:textSize="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
 
     <EditText
         android:id="@+id/locationEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="지역 입력"
-        android:padding="16dp"
+        android:hint="지역을 입력해 주세요"
+        android:padding="24dp"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="80dp"/>
+        app:layout_constraintVertical_bias="0.4" />
 
-    <!-- 데이트 코스 생성 버튼 -->
     <Button
         android:id="@+id/generateCourseButton"
         android:layout_width="0dp"
@@ -30,10 +42,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="20dp"
         android:layout_marginTop="32dp"
         android:padding="16dp"/>
 
-    <!-- 생성한 코스 보기 버튼 -->
     <Button
         android:id="@+id/viewSavedCoursesButton"
         android:layout_width="0dp"
@@ -43,7 +55,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp"
+        android:textSize="20dp"
+        android:layout_marginTop="8dp"
         android:padding="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
