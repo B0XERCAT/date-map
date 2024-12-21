@@ -88,10 +88,19 @@ class LoadingActivity : AppCompatActivity() {
                         val str = response.body!!.string()
                         val data = Gson().fromJson(str, DataModel::class.java)
 
+                        data.items.forEach { item ->
+                            item.title = removeHtmlTags(item.title)
+                        }
+
                         continuation.resumeWith(Result.success(data.items) as Result<MutableList<DataModel.Item>>)
                     }
                 }
             })
         }
+    }
+
+    private fun removeHtmlTags(input: String): String {
+        // 모든 HTML 태그 제거: <b>, <div>, <i>, <p>, <br> 등등
+        return input.replace(Regex("<[^>]*>"), "") // < > 사이의 모든 태그를 빈 문자열로 교체
     }
 }
