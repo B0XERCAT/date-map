@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ResultActivity">
 
-    <!-- ListView for displaying items -->
     <ListView
         android:id="@+id/listView"
         android:layout_width="wrap_content"
@@ -17,14 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Save Button -->
     <Button
         android:id="@+id/saveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="코스 저장"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/listView"
+        android:layout_margin="20dp"
+        android:padding="16dp"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
