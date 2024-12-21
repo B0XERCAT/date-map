@@ -5,10 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.google.gson.Gson
 import kotlinx.coroutines.*
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.json.JSONObject
+import okhttp3.Response
+import java.io.IOException
+import kotlin.coroutines.suspendCoroutine
 
 class LoadingActivity : AppCompatActivity() {
 
@@ -24,61 +29,68 @@ class LoadingActivity : AppCompatActivity() {
 
         val location = intent.getStringExtra("location") ?: ""
 
-        // 비동기적으로 네이버 API 호출
         fetchDataFromApi(location)
     }
 
     private fun fetchDataFromApi(location: String) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                // API 호출 시뮬레이션 (실제 네이버 API를 호출해야 함)
                 val (restaurant, cafe, attraction) = fetchData(location)
 
-                // 로딩 끝나면 결과 화면으로 이동
                 progressBar.visibility = ProgressBar.GONE
                 loadingText.visibility = TextView.GONE
 
                 val intent = Intent(this@LoadingActivity, ResultActivity::class.java)
-                intent.putExtra("restaurant", restaurant)
-                intent.putExtra("cafe", cafe)
-                intent.putExtra("attraction", attraction)
+                intent.putExtra("restaurant", restaurant.toString())
+                intent.putExtra("cafe", cafe.toString())
+                intent.putExtra("attraction", attraction.toString())
                 startActivity(intent)
                 finish()
             } catch (e: Exception) {
                 e.printStackTrace()
-                // 에러 처리
             }
         }
     }
 
-    private suspend fun fetchData(location: String): Triple<String, String, String> {
-        // API 요청 코드
-        val client = OkHttpClient()
-
-        // 맛집, 카페, 명소 GET 요청
+    private suspend fun fetchData(location: String): Triple<DataModel.Item, DataModel.Item, DataModel.Item> {
         val restaurant = fetchPlaceData(location, "맛집")
         val cafe = fetchPlaceData(location, "카페")
         val attraction = fetchPlaceData(location, "명소")
-
-        // 랜덤으로 하나씩 뽑아오기 (여기선 예시로 첫 번째 값만 사용)
         return Triple(restaurant[0], cafe[0], attraction[0])
     }
 
-    private suspend fun fetchPlaceData(location: String, category: String): List<String> {
-        // 실제 네이버 API 호출
-        val url = "https://openapi.naver.com/v1/search/local.json?query=$location+$category"
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-        val response = client.newCall(request).execute()
-        val jsonResponse = response.body?.string()
-        val jsonObject = JSONObject(jsonResponse)
-        val items = jsonObject.getJSONArray("items")
+    private suspend fun fetchPlaceData(location: String, category: String): MutableList<DataModel.Item> {
+        val url = "https://openapi.naver.com/v1/search/local.json?query=$location$category&start=1&sort=random&display=5"
+        val clientId = BuildConfig.X_NAVER_CLIENT_ID
+        val clientSecret = BuildConfig.X_NAVER_CLIENT_SECRET
 
-        val places = mutableListOf<String>()
-        for (i in 0 until items.length()) {
-            val place = items.getJSONObject(i).getString("title")
-            places.add(place)
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("X-Naver-Client-Id", clientId)
+            .addHeader("X-Naver-Client-Secret", clientSecret)
+            .build()
+
+        val client = OkHttpClient()
+
+        return suspendCoroutine { continuation ->
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    continuation.resumeWith(Result.failure(e))
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    response.use {
+                        if (!response.isSuccessful) {
+                            continuation.resumeWith(Result.failure(IOException("Unexpected code $response")))
+                            return
+                        }
+                        val str = response.body!!.string()
+                        val data = Gson().fromJson(str, DataModel::class.java)
+
+                        continuation.resumeWith(Result.success(data.items) as Result<MutableList<DataModel.Item>>)
+                    }
+                }
+            })
         }
-        return places
     }
 }

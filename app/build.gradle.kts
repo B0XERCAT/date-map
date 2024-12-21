@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,14 +10,18 @@ android {
     namespace = "edu.skku.cs.datemap"
     compileSdk = 34
 
+    val properties = Properties()
+    properties.load(FileInputStream(rootProject.file("local.properties")))
+
     defaultConfig {
         applicationId = "edu.skku.cs.datemap"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "X_NAVER_CLIENT_ID", "\"${properties.getProperty("X_NAVER_CLIENT_ID")}\"")
+        buildConfigField("String", "X_NAVER_CLIENT_SECRET", "\"${properties.getProperty("X_NAVER_CLIENT_SECRET")}\"")
     }
 
     buildTypes {
@@ -35,6 +42,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
