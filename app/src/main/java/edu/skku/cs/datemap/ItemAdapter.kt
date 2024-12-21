@@ -21,9 +21,17 @@ class ItemAdapter(private val context: Context, private val items: ArrayList<Dat
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.item, null)
 
+        val categoryTextView = view.findViewById<TextView>(R.id.categoryText)
         val titleTextView = view!!.findViewById<TextView>(R.id.titleText)
         val addressTextView = view.findViewById<TextView>(R.id.addressText)
 
+        val category = when (position) {
+            0 -> "맛집"
+            1 -> "카페"
+            2 -> "명소"
+            else -> "기타"
+        }
+        categoryTextView.text = category
         titleTextView.text = items[position].title
         addressTextView.text = items[position].address
 
