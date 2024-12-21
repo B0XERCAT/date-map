@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/categoryText"
@@ -25,12 +24,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Address"
-        android:textSize="12sp"
-        android:textColor="@color/material_dynamic_neutral60"/>
+        android:textColor="@color/material_dynamic_neutral60"
+        android:textSize="12sp" />
+
     <ImageView
         android:id="@+id/starButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_star_empty"
-        android:contentDescription="Favorite" />
+        android:contentDescription="Favorite"
+        android:src="@drawable/ic_star_empty" />
 </LinearLayout>

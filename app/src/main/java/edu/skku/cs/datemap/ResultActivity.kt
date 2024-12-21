@@ -25,7 +25,7 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var cafe: DataModel.Item
     private lateinit var attraction: DataModel.Item
 
-    private val mapView : MapView by lazy {
+    private val mapView: MapView by lazy {
         findViewById<MapView>(R.id.mapView)
     }
 
@@ -36,8 +36,10 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: NaverMap) {
         naverMap = map
 
-        val averageLat = (restaurant.mapy.toLong() + cafe.mapy.toLong() + attraction.mapy.toLong()) / 3.0
-        val averageLng = (restaurant.mapx.toLong() + cafe.mapx.toLong() + attraction.mapx.toLong()) / 3.0
+        val averageLat =
+            (restaurant.mapy.toLong() + cafe.mapy.toLong() + attraction.mapy.toLong()) / 3.0
+        val averageLng =
+            (restaurant.mapx.toLong() + cafe.mapx.toLong() + attraction.mapx.toLong()) / 3.0
 
         val lat = averageLat / MAP_SCALE
         val lng = averageLng / MAP_SCALE
@@ -46,7 +48,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         naverMap.moveCamera(cameraUpdate)
 
         val restaurantMarker = Marker()
-        restaurantMarker.position = LatLng(restaurant.mapy.toLong() / MAP_SCALE, restaurant.mapx.toLong() / MAP_SCALE)
+        restaurantMarker.position =
+            LatLng(restaurant.mapy.toLong() / MAP_SCALE, restaurant.mapx.toLong() / MAP_SCALE)
         restaurantMarker.map = naverMap
         restaurantMarker.captionText = restaurant.title
 
@@ -56,7 +59,8 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         cafeMarker.captionText = cafe.title
 
         val attractionMarker = Marker()
-        attractionMarker.position = LatLng(attraction.mapy.toLong() / MAP_SCALE, attraction.mapx.toLong() / MAP_SCALE)
+        attractionMarker.position =
+            LatLng(attraction.mapy.toLong() / MAP_SCALE, attraction.mapx.toLong() / MAP_SCALE)
         attractionMarker.map = naverMap
         attractionMarker.captionText = attraction.title
 

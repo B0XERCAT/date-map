@@ -64,8 +64,12 @@ class LoadingActivity : AppCompatActivity() {
         return Triple(shuffledRestaurant[0], shuffledCafe[0], shuffledAttraction[0])
     }
 
-    private suspend fun fetchPlaceData(location: String, category: String): MutableList<DataModel.Item> {
-        val url = "https://openapi.naver.com/v1/search/local.json?query=$location$category&start=1&sort=random&display=5"
+    private suspend fun fetchPlaceData(
+        location: String,
+        category: String
+    ): MutableList<DataModel.Item> {
+        val url =
+            "https://openapi.naver.com/v1/search/local.json?query=$location$category&start=1&sort=random&display=5"
         val clientId = BuildConfig.X_NAVER_CLIENT_ID
         val clientSecret = BuildConfig.X_NAVER_CLIENT_SECRET
 

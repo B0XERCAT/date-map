@@ -13,7 +13,8 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class ItemAdapter(private val context: Context, private val items: MutableList<DataModel.Item>) : BaseAdapter() {
+class ItemAdapter(private val context: Context, private val items: MutableList<DataModel.Item>) :
+    BaseAdapter() {
 
     override fun getCount(): Int = items.size
 
@@ -41,6 +42,7 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
                 items[position].category = newCategory
                 newCategory
             }
+
             else -> items[position].category
         }
         categoryTextView.text = category
@@ -48,13 +50,15 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         addressTextView.text = items[position].address
 
         val isFavorite = checkIfFavorite(items[position])
-        val starImageResource = if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_empty
+        val starImageResource =
+            if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_empty
         starButton.setImageResource(starImageResource)
 
         starButton.setOnClickListener {
             toggleFavorite(items[position])
             val newIsFavorite = checkIfFavorite(items[position])
-            val newStarResource = if (newIsFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_empty
+            val newStarResource =
+                if (newIsFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_empty
             starButton.setImageResource(newStarResource)
         }
 
