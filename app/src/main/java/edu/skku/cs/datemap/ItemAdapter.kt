@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class ItemAdapter(private val context: Context, private val items: MutableList<DataModel.Item>) : BaseAdapter() {
 
@@ -27,7 +29,7 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         val categoryTextView = view.findViewById<TextView>(R.id.categoryText)
         val titleTextView = view!!.findViewById<TextView>(R.id.titleText)
         val addressTextView = view.findViewById<TextView>(R.id.addressText)
-        val heartButton = view.findViewById<Button>(R.id.heartButton)
+        val starButton = view.findViewById<ImageView>(R.id.starButton)
 
         val category = when (position) {
             0 -> "맛집"
@@ -39,8 +41,15 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         titleTextView.text = items[position].title
         addressTextView.text = items[position].address
 
-        heartButton.setOnClickListener {
-            saveItemToLocalStorage(items[position])
+        val isFavorite = checkIfFavorite(items[position])
+        val starImageResource = if (isFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_empty
+        starButton.setImageResource(starImageResource)
+
+        starButton.setOnClickListener {
+            toggleFavorite(items[position])
+            val newIsFavorite = checkIfFavorite(items[position])
+            val newStarResource = if (newIsFavorite) R.drawable.ic_star_filled else R.drawable.ic_star_empty
+            starButton.setImageResource(newStarResource)
         }
 
         view.setOnClickListener {
@@ -51,20 +60,35 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         return view
     }
 
-    private fun saveItemToLocalStorage(item: DataModel.Item) {
-        val sharedPreferences = context.getSharedPreferences("savedItems", Context.MODE_PRIVATE)
+    private fun checkIfFavorite(item: DataModel.Item): Boolean {
+        val sharedPreferences = context.getSharedPreferences("LocalStorage", Context.MODE_PRIVATE)
         val gson = Gson()
+        val json = sharedPreferences.getString("saved_items", null)
+        val type = object : TypeToken<MutableList<DataModel.Item>>() {}.type
+        val savedItems: MutableList<DataModel.Item> = gson.fromJson(json, type) ?: mutableListOf()
 
-        val itemsJson = sharedPreferences.getString("items", "[]")
-        val items = gson.fromJson(itemsJson, Array<DataModel.Item>::class.java).toMutableList()
+        return savedItems.contains(item)
+    }
 
-        if (!items.contains(item)) {
-            items.add(item)
-            val updatedItemsJson = gson.toJson(items)
-            sharedPreferences.edit().putString("items", updatedItemsJson).apply()
-            Toast.makeText(context, "장소가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+    private fun toggleFavorite(item: DataModel.Item) {
+        val sharedPreferences = context.getSharedPreferences("LocalStorage", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("saved_items", null)
+        val type = object : TypeToken<MutableList<DataModel.Item>>() {}.type
+        val savedItems: MutableList<DataModel.Item> = gson.fromJson(json, type) ?: mutableListOf()
+
+        if (savedItems.contains(item)) {
+            savedItems.remove(item)
         } else {
-            Toast.makeText(context, "이미 저장된 장소입니다.", Toast.LENGTH_SHORT).show()
+            savedItems.add(item)
         }
+
+        val updatedJson = gson.toJson(savedItems)
+        val editor = sharedPreferences.edit()
+        editor.putString("saved_items", updatedJson)
+        editor.apply()
+
+        val message = if (savedItems.contains(item)) "장소를 저장했습니다" else "저장된 장소에서 제거했습니다"
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

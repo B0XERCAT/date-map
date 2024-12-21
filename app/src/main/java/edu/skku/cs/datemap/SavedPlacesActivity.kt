@@ -1,6 +1,5 @@
 package edu.skku.cs.datemap
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,10 +22,10 @@ class SavedPlacesActivity : AppCompatActivity() {
     }
 
     private fun loadSavedItems() {
-        val sharedPreferences = getSharedPreferences("savedItems", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("LocalStorage", MODE_PRIVATE)
         val gson = Gson()
 
-        val itemsJson = sharedPreferences.getString("items", "[]")
+        val itemsJson = sharedPreferences.getString("saved_items", "[]")
         val items = gson.fromJson(itemsJson, Array<DataModel.Item>::class.java).toMutableList()
 
         savedItems.clear()
