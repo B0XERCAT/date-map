@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -31,11 +30,18 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         val addressTextView = view.findViewById<TextView>(R.id.addressText)
         val starButton = view.findViewById<ImageView>(R.id.starButton)
 
-        val category = when (position) {
-            0 -> "맛집"
-            1 -> "카페"
-            2 -> "명소"
-            else -> "기타"
+        val category = when {
+            items[position].category == null -> {
+                val newCategory = when (position) {
+                    0 -> "맛집"
+                    1 -> "카페"
+                    2 -> "명소"
+                    else -> "기타"
+                }
+                items[position].category = newCategory
+                newCategory
+            }
+            else -> items[position].category
         }
         categoryTextView.text = category
         titleTextView.text = items[position].title
@@ -88,7 +94,7 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         editor.putString("saved_items", updatedJson)
         editor.apply()
 
-        val message = if (savedItems.contains(item)) "장소를 저장했습니다" else "저장된 장소에서 제거했습니다"
+        val message = if (savedItems.contains(item)) "즐겨찾기 저장했습니다" else "즐겨찾기에서 제거했습니다"
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
