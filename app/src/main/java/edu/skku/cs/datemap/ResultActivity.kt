@@ -75,7 +75,6 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         listView = findViewById(R.id.listView)
-        saveButton = findViewById(R.id.saveButton)
 
         val restaurantJson = intent.getStringExtra("restaurant")
         val cafeJson = intent.getStringExtra("cafe")
@@ -98,29 +97,5 @@ class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
         val adapter = ItemAdapter(this, items)
         listView.adapter = adapter
         adapter.notifyDataSetChanged()
-
-        saveButton.setOnClickListener {
-            saveToLocalStorage(items)
-            Toast.makeText(this, "성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // TODO: Implement the saveToLocalStorage function
-    private fun saveToLocalStorage(items: MutableList<DataModel.Item>) {
-        val sharedPreferences = getSharedPreferences("LocalStorage", MODE_PRIVATE)
-        val gson = Gson()
-
-        val json = sharedPreferences.getString("saved_items", null)
-        val type = object : TypeToken<MutableList<DataModel.Item>>() {}.type
-        val savedItems: MutableList<DataModel.Item> = gson.fromJson(json, type) ?: mutableListOf()
-
-        savedItems.addAll(items)
-
-        val updatedJson = gson.toJson(savedItems)
-        val editor = sharedPreferences.edit()
-        editor.putString("saved_items", updatedJson)
-        editor.apply()
-
-        Toast.makeText(this, "성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show()
     }
 }

@@ -20,7 +20,7 @@
             android:name=".ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".SavedCoursesActivity"
+            android:name=".SavedPlacesActivity"
             android:exported="false" />
         <activity
             android:name=".LoadingActivity"

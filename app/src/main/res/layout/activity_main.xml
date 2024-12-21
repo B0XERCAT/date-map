@@ -50,7 +50,7 @@
         android:id="@+id/viewSavedCoursesButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="생성한 코스 보기"
+        android:text="저장된 장소"
         app:layout_constraintTop_toBottomOf="@id/generateCourseButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

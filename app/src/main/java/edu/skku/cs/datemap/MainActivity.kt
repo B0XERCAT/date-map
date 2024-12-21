@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         val viewSavedCoursesButton: Button = findViewById(R.id.viewSavedCoursesButton)
 
         generateCourseButton.setOnClickListener {
-            // 지역 입력 값을 가져와서 LoadingActivity로 넘김
             val location = locationEditText.text.toString()
             val intent = Intent(this, LoadingActivity::class.java)
             intent.putExtra("location", location)
@@ -28,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewSavedCoursesButton.setOnClickListener {
-            val intent = Intent(this, SavedCoursesActivity::class.java)
+            val intent = Intent(this, SavedPlacesActivity::class.java)
             startActivity(intent)
         }
     }

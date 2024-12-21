@@ -27,5 +27,9 @@
         android:text="Address"
         android:textSize="12sp"
         android:textColor="@color/material_dynamic_neutral60"/>
-
+    <Button
+        android:id="@+id/heartButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="💖" />
 </LinearLayout>

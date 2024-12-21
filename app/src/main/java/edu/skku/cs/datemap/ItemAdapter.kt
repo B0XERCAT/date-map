@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import com.google.gson.Gson
 
-class ItemAdapter(private val context: Context, private val items: ArrayList<DataModel.Item>) : BaseAdapter() {
+class ItemAdapter(private val context: Context, private val items: MutableList<DataModel.Item>) : BaseAdapter() {
 
     override fun getCount(): Int = items.size
 
@@ -24,6 +27,7 @@ class ItemAdapter(private val context: Context, private val items: ArrayList<Dat
         val categoryTextView = view.findViewById<TextView>(R.id.categoryText)
         val titleTextView = view!!.findViewById<TextView>(R.id.titleText)
         val addressTextView = view.findViewById<TextView>(R.id.addressText)
+        val heartButton = view.findViewById<Button>(R.id.heartButton)
 
         val category = when (position) {
             0 -> "맛집"
@@ -35,11 +39,32 @@ class ItemAdapter(private val context: Context, private val items: ArrayList<Dat
         titleTextView.text = items[position].title
         addressTextView.text = items[position].address
 
+        heartButton.setOnClickListener {
+            saveItemToLocalStorage(items[position])
+        }
+
         view.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(items[position].link))
             context.startActivity(intent)
         }
 
         return view
+    }
+
+    private fun saveItemToLocalStorage(item: DataModel.Item) {
+        val sharedPreferences = context.getSharedPreferences("savedItems", Context.MODE_PRIVATE)
+        val gson = Gson()
+
+        val itemsJson = sharedPreferences.getString("items", "[]")
+        val items = gson.fromJson(itemsJson, Array<DataModel.Item>::class.java).toMutableList()
+
+        if (!items.contains(item)) {
+            items.add(item)
+            val updatedItemsJson = gson.toJson(items)
+            sharedPreferences.edit().putString("items", updatedItemsJson).apply()
+            Toast.makeText(context, "장소가 저장되었습니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "이미 저장된 장소입니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 }
