@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/locationEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="지역 입력"
+        android:padding="16dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="80dp"/>
+
+    <!-- 데이트 코스 생성 버튼 -->
+    <Button
+        android:id="@+id/generateCourseButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="데이트 코스 생성"
+        app:layout_constraintTop_toBottomOf="@id/locationEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"/>
+
+    <!-- 생성한 코스 보기 버튼 -->
+    <Button
+        android:id="@+id/viewSavedCoursesButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="생성한 코스 보기"
+        app:layout_constraintTop_toBottomOf="@id/generateCourseButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="16dp"
+        android:padding="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
