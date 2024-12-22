@@ -63,8 +63,13 @@ class ItemAdapter(private val context: Context, private val items: MutableList<D
         }
 
         view.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(items[position].link))
-            context.startActivity(intent)
+            val link = items[position].link
+            if (link.isNullOrEmpty()) {
+                Toast.makeText(context, "연결된 링크가 없습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                context.startActivity(intent)
+            }
         }
 
         return view
