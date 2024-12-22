@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         val locationEditText: EditText = findViewById(R.id.locationEditText)
         val generateCourseButton: Button = findViewById(R.id.generateCourseButton)
-        val viewSavedCoursesButton: Button = findViewById(R.id.viewSavedCoursesButton)
+        val viewSavedPlacesButton: Button = findViewById(R.id.viewSavedPlacesButton)
 
         generateCourseButton.setOnClickListener {
             val location = locationEditText.text.toString()
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             locationEditText.setText("")
         }
 
-        viewSavedCoursesButton.setOnClickListener {
+        viewSavedPlacesButton.setOnClickListener {
             val intent = Intent(this, SavedPlacesActivity::class.java)
             startActivity(intent)
         }
