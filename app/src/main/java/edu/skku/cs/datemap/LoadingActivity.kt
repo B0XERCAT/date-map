@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import okhttp3.Call
@@ -37,6 +38,15 @@ class LoadingActivity : AppCompatActivity() {
             try {
                 val (restaurant, cafe, attraction) = fetchData(location)
 
+                if (restaurant.address.isEmpty() || cafe.address.isEmpty() || attraction.address.isEmpty()) {
+                    Toast.makeText(this@LoadingActivity, "코스 생성에 실패했습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                    val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                    return@launch
+                }
+
                 progressBar.visibility = ProgressBar.GONE
                 loadingText.visibility = TextView.GONE
 
@@ -49,6 +59,15 @@ class LoadingActivity : AppCompatActivity() {
                 finish()
             } catch (e: Exception) {
                 e.printStackTrace()
+                Toast.makeText(
+                    this@LoadingActivity,
+                    "코스 생성에 실패했습니다. 장소를 찾을 수 없습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val intent = Intent(this@LoadingActivity, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+                return@launch
             }
         }
     }
@@ -61,7 +80,11 @@ class LoadingActivity : AppCompatActivity() {
         val shuffledRestaurant = restaurant.shuffled()
         val shuffledCafe = cafe.shuffled()
         val shuffledAttraction = attraction.shuffled()
-        return Triple(shuffledRestaurant[0], shuffledCafe[0], shuffledAttraction[0])
+        return Triple(
+            shuffledRestaurant.firstOrNull() ?: DataModel.Item("No restaurant", "", "", "", "", ""),
+            shuffledCafe.firstOrNull() ?: DataModel.Item("No cafe", "", "", "", "", ""),
+            shuffledAttraction.firstOrNull() ?: DataModel.Item("No attraction", "", "", "", "", "")
+        )
     }
 
     private suspend fun fetchPlaceData(
