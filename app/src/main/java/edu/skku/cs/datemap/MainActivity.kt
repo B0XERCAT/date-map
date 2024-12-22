@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LoadingActivity::class.java)
             intent.putExtra("location", location)
             startActivity(intent)
+            locationEditText.setText("")
         }
 
         viewSavedCoursesButton.setOnClickListener {
