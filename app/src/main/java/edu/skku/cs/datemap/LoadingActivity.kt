@@ -108,7 +108,13 @@ class LoadingActivity : AppCompatActivity() {
     }
 
     private fun removeHtmlTags(input: String): String {
-        // 모든 HTML 태그 제거: <b>, <div>, <i>, <p>, <br> 등등
-        return input.replace(Regex("<[^>]*>"), "") // < > 사이의 모든 태그를 빈 문자열로 교체
+        // HTML 엔티티 제거: &amp;, &lt; 등
+        var cleanedString = input.replace(Regex("&[a-zA-Z0-9#]+;"), "")
+
+        // 모든 HTML 태그 제거: <b>, <div>, <i>, <p>, <br> 등
+        cleanedString = cleanedString.replace(Regex("<[^>]*>"), "")
+
+        return cleanedString
     }
+
 }
