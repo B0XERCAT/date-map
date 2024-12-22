@@ -1,12 +1,10 @@
 package edu.skku.cs.datemap
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
@@ -18,7 +16,6 @@ import com.naver.maps.map.overlay.Marker
 class ResultActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var listView: ListView
-    private lateinit var saveButton: Button
     private lateinit var naverMap: NaverMap
 
     private lateinit var restaurant: DataModel.Item
